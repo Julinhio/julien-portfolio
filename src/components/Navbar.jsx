@@ -11,6 +11,8 @@ const navItems = [
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -82,18 +84,39 @@ export default function Navbar() {
             </div>
 
             {/* Mobile Menu Button */}
-            <button className="md:hidden flex flex-col gap-1 w-6 h-6 group">
-              <div className="w-full h-0.5 bg-gray-300 group-hover:bg-white transition-colors duration-300 transform group-hover:rotate-45 group-hover:translate-y-1.5"></div>
-              <div className="w-full h-0.5 bg-gray-300 group-hover:bg-white transition-all duration-300 group-hover:opacity-0"></div>
-              <div className="w-full h-0.5 bg-gray-300 group-hover:bg-white transition-colors duration-300 transform group-hover:-rotate-45 group-hover:-translate-y-1.5"></div>
+            <button 
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden flex flex-col gap-1 w-6 h-6 group"
+            >
+              <div className={`w-full h-0.5 bg-gray-300 group-hover:bg-white transition-all duration-300 transform ${mobileMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`}></div>
+              <div className={`w-full h-0.5 bg-gray-300 group-hover:bg-white transition-all duration-300 ${mobileMenuOpen ? 'opacity-0' : ''}`}></div>
+              <div className={`w-full h-0.5 bg-gray-300 group-hover:bg-white transition-all duration-300 transform ${mobileMenuOpen ? '-rotate-45 -translate-y-1.5' : ''}`}></div>
             </button>
           </div>
         </div>
 
-        {/* Mobile Menu (you can expand this later) */}
-        <div className="md:hidden mt-4 opacity-0 pointer-events-none transition-all duration-300">
-          {/* Mobile nav items would go here */}
-        </div>
+{/* Mobile Menu */}
+<div className={`md:hidden mt-4 transition-all duration-300 ${mobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+  <div className="bg-gray-800/90 backdrop-blur-xl border border-gray-700/50 rounded-xl p-4 space-y-2">
+    {navItems.map((item) => (
+      <NavLink
+        key={item.name}
+        to={item.path}
+        onClick={() => setMobileMenuOpen(false)}
+        className={({ isActive }) =>
+          `block px-4 py-3 rounded-lg text-center font-medium transition-all duration-300 ${
+            isActive 
+              ? 'text-white bg-gradient-to-r from-blue-600/80 to-cyan-600/80' 
+              : 'text-gray-300 hover:text-white hover:bg-gray-700/50'
+          }`
+        }
+        end={item.path === "/"}
+      >
+        {item.name}
+      </NavLink>
+    ))}
+  </div>
+</div>
       </div>
 
       {/* Subtle bottom glow effect */}

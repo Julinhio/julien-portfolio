@@ -1,5 +1,6 @@
 import { Rocket, Bot, Code2, ArrowRight, Zap, Database, Cpu } from "lucide-react";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 export default function Home() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
