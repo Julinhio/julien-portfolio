@@ -96,8 +96,7 @@ export default function Navbar() {
         </div>
 
 {/* Mobile Menu */}
-<div className={`md:hidden mt-4 transition-all duration-300 ${mobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
-  <div className="bg-gray-800/90 backdrop-blur-xl border border-gray-700/50 rounded-xl p-4 space-y-2">
+<div className={`md:hidden mt-4 transition-all duration-300 ${mobileMenuOpen ? 'opacity-100 pointer-events-auto max-h-96' : 'opacity-0 pointer-events-none max-h-0 overflow-hidden'}`}>  <div className="bg-gray-800/90 backdrop-blur-xl border border-gray-700/50 rounded-xl p-4 space-y-2">
     {navItems.map((item) => (
       <NavLink
         key={item.name}
