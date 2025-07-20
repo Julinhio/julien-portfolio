@@ -65,22 +65,22 @@ export default function Home() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="/projects"
+            <Link
+              to="/projects"
               className="group inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 px-8 py-4 rounded-xl font-semibold transition-all duration-300 shadow-xl hover:shadow-2xl hover:shadow-blue-500/25 transform hover:-translate-y-1"
             >
               <Rocket className="w-5 h-5 group-hover:rotate-12 transition-transform" />
               View My Work
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </a>
+            </Link>
             
-            <a
-              href="/ai"
+            <Link
+              to="/ai"
               className="group inline-flex items-center gap-3 bg-gray-800/50 hover:bg-gray-700/50 border border-gray-600 hover:border-gray-500 px-8 py-4 rounded-xl font-semibold transition-all duration-300"
             >
               <Bot className="w-5 h-5 group-hover:scale-110 transition-transform" />
               Chat with My AI
-            </a>
+            </Link>
           </div>
         </div>
 

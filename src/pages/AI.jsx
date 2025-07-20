@@ -5,6 +5,14 @@ import {
   Volume2, VolumeX, Settings, Sparkles, MessageCircle,
   ChevronDown, Play, Pause
 } from "lucide-react";
+import OpenAI from 'openai';
+
+const openai = new OpenAI({
+  apiKey: import.meta.env.VITE_OPENAI_API_KEY,
+  dangerouslyAllowBrowser: true
+});
+
+const ASSISTANT_ID = "asst_qVWJJeBWoNn7s8Erg7JRK6Tv";
 
 const quickActions = [
   { icon: Calendar, label: "Book a Call", action: "book_call", color: "from-blue-500 to-cyan-500" },
@@ -41,8 +49,24 @@ export default function AIChat() {
   const [isMinimized, setIsMinimized] = useState(false);
   const [particles, setParticles] = useState([]);
   const [aiMood, setAiMood] = useState("idle"); // idle, thinking, excited, helpful
+  const [threadId, setThreadId] = useState(null);
   const messagesEndRef = useRef(null);
   const chatContainerRef = useRef(null);
+
+  // Initialize thread when component mounts
+  useEffect(() => {
+    const initializeThread = async () => {
+      try {
+        const thread = await openai.beta.threads.create();
+        setThreadId(thread.id);
+        console.log("Thread created:", thread.id);
+      } catch (error) {
+        console.error("Failed to create thread:", error);
+      }
+    };
+    
+    initializeThread();
+  }, []);
 
   // Particle system for AI thinking
   useEffect(() => {
@@ -76,50 +100,182 @@ export default function AIChat() {
 
   // Auto scroll to bottom
   useEffect(() => {
-    // Only auto-scroll if we have more than just the initial message
     if (messages.length > 1) {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
 
-  // Simulate AI responses
-  const simulateAIResponse = (userMessage) => {
+  // Function to handle book_call
+  const handleBookCall = async (args) => {
+    console.log("Book call requested with:", args);
+    
+    // Here you could:
+    // 1. Send email to yourself
+    // 2. Open Calendly
+    // 3. Save to database
+    // For now, let's just return a success message
+    
+    return {
+      success: true,
+      message: `Thanks ${args.name}! I'll get back to you at ${args.email} about your ${args.project_type} project. Check your email for a calendar link.`,
+      calendar_link: "https://calendly.com/julien-automata" // Replace with your real link
+    };
+  };
+
+  // Assistant API integration
+  const simulateAIResponse = async (userMessage) => {
+    if (!threadId) {
+      console.error("No thread ID available");
+      return;
+    }
+
     setIsTyping(true);
     setAiMood("thinking");
     
-    setTimeout(() => {
-      let response = "Thanks for your message! I'm still learning, but I can help you understand Julien's work better. Would you like to book a consultation call?";
+    try {
+      console.log("Using thread ID:", threadId);
       
-      // Simple response logic (replace with actual AI API)
-      if (userMessage.toLowerCase().includes("automation")) {
-        response = "Automation is Julien's superpower! 🚀 He's built 50+ automation workflows using Make.com, saving businesses 200+ hours weekly. Want to see how he can automate your processes?";
-      } else if (userMessage.toLowerCase().includes("book") || userMessage.toLowerCase().includes("call")) {
-        response = "I'd love to help you book a call with Julien! 📅 He typically offers 30-minute strategy sessions where you can discuss your automation needs. Shall I send you his calendar link?";
-      } else if (userMessage.toLowerCase().includes("price") || userMessage.toLowerCase().includes("cost")) {
-        response = "Great question! Julien's automation projects typically range from $2k-10k depending on complexity. But he always starts with a free consultation to understand your needs. Want to schedule that?";
+      // Add message to thread
+      await openai.beta.threads.messages.create(threadId, {
+        role: "user",
+        content: userMessage
+      });
+
+      // Run the assistant
+      const run = await openai.beta.threads.runs.create(threadId, {
+        assistant_id: ASSISTANT_ID
+      });
+
+      console.log("Run created:", run.id);
+
+      // Wait and check for function calls using REST API instead of SDK
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      
+      // Try to get run status using fetch instead of the broken SDK method
+      let runStatus;
+      try {
+        const response = await fetch(`https://api.openai.com/v1/threads/${threadId}/runs/${run.id}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
+            'OpenAI-Beta': 'assistants=v2'
+          }
+        });
+        runStatus = await response.json();
+        console.log("Run status via fetch:", runStatus.status);
+        
+        if (runStatus.status === 'requires_action') {
+          console.log("Function call required:", runStatus.required_action);
+          
+          const toolCall = runStatus.required_action.submit_tool_outputs.tool_calls[0];
+          const functionName = toolCall.function.name;
+          const functionArgs = JSON.parse(toolCall.function.arguments);
+          
+          console.log("Calling function:", functionName, "with args:", functionArgs);
+          
+          let functionResult;
+          if (functionName === 'book_call') {
+            functionResult = await handleBookCall(functionArgs);
+          } else {
+            functionResult = { error: "Unknown function" };
+          }
+          
+          // Submit the function result using fetch
+          await fetch(`https://api.openai.com/v1/threads/${threadId}/runs/${run.id}/submit_tool_outputs`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
+              'OpenAI-Beta': 'assistants=v2',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              tool_outputs: [{
+                tool_call_id: toolCall.id,
+                output: JSON.stringify(functionResult)
+              }]
+            })
+          });
+          
+          console.log("Function result submitted, waiting for response...");
+          await new Promise(resolve => setTimeout(resolve, 3000));
+        }
+      } catch (error) {
+        console.log("Fetch method also failed:", error);
       }
 
-      const aiMessage = {
-        id: messages.length + 1,
+      // Get the assistant's response directly
+      const threadMessages = await openai.beta.threads.messages.list(threadId);
+      console.log("Messages retrieved:", threadMessages.data.length);
+      
+      const assistantMessage = threadMessages.data.find(msg => 
+        msg.role === 'assistant' && 
+        msg.created_at > Date.now()/1000 - 20
+      );
+      
+      if (assistantMessage) {
+        console.log("Found assistant message:", assistantMessage.content[0].text.value);
+        
+        const aiMessage = {
+          id: Date.now(),
+          type: "ai",
+          content: assistantMessage.content[0].text.value,
+          timestamp: new Date(),
+          typing: false
+        };
+
+        setMessages(prev => [...prev, aiMessage]);
+        setAiMood("helpful");
+        
+        setTimeout(() => setAiMood("idle"), 2000);
+      } else {
+        console.log("No assistant message found, trying again...");
+        // Try again after more time
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        const retryMessages = await openai.beta.threads.messages.list(threadId);
+        const retryAssistantMessage = retryMessages.data.find(msg => 
+          msg.role === 'assistant' && 
+          msg.created_at > Date.now()/1000 - 30
+        );
+        
+        if (retryAssistantMessage) {
+          const aiMessage = {
+            id: Date.now(),
+            type: "ai",
+            content: retryAssistantMessage.content[0].text.value,
+            timestamp: new Date(),
+            typing: false
+          };
+
+          setMessages(prev => [...prev, aiMessage]);
+          setAiMood("helpful");
+          
+          setTimeout(() => setAiMood("idle"), 2000);
+        } else {
+          throw new Error("No assistant response found after 8 seconds");
+        }
+      }
+    } catch (error) {
+      console.error("Assistant API Error:", error);
+      // Fallback response
+      const errorMessage = {
+        id: Date.now(),
         type: "ai",
-        content: response,
+        content: "I'm experiencing some technical difficulties. Please try again in a moment!",
         timestamp: new Date(),
         typing: false
       };
-
-      setMessages(prev => [...prev, aiMessage]);
+      setMessages(prev => [...prev, errorMessage]);
+      setAiMood("idle");
+    } finally {
       setIsTyping(false);
-      setAiMood("helpful");
-      
-      setTimeout(() => setAiMood("idle"), 2000);
-    }, 1500 + Math.random() * 1000);
+    }
   };
 
   const handleSendMessage = () => {
     if (!inputValue.trim()) return;
 
     const userMessage = {
-      id: messages.length + 1,
+      id: Date.now(),
       type: "user",
       content: inputValue,
       timestamp: new Date(),
@@ -254,12 +410,12 @@ export default function AIChat() {
                   <span className="text-sm text-gray-400">Status</span>
                   <span className="text-sm text-green-400 flex items-center gap-1">
                     <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                    Online
+                    {threadId ? "Connected" : "Connecting..."}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-gray-400">Response Time</span>
-                  <span className="text-sm text-blue-400">~2s</span>
+                  <span className="text-sm text-blue-400">~3s</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-gray-400">Mood</span>
@@ -288,7 +444,7 @@ export default function AIChat() {
                     <div>
                       <h3 className="font-semibold text-white">Julien AI Assistant</h3>
                       <p className="text-xs text-gray-400">
-                        {isTyping ? "Thinking..." : "Online • Responds in ~2s"}
+                        {isTyping ? "Thinking..." : threadId ? "Online • Powered by OpenAI" : "Connecting..."}
                       </p>
                     </div>
                   </div>
@@ -371,6 +527,7 @@ export default function AIChat() {
                       onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
                       placeholder="Ask me anything about Julien's work..."
                       className="w-full bg-gray-700/50 border border-gray-600/50 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
+                      disabled={!threadId}
                     />
                     <button
                       onClick={() => setIsListening(!isListening)}
@@ -383,7 +540,7 @@ export default function AIChat() {
                   </div>
                   <button
                     onClick={handleSendMessage}
-                    disabled={!inputValue.trim()}
+                    disabled={!inputValue.trim() || !threadId}
                     className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 disabled:from-gray-600 disabled:to-gray-600 p-3 rounded-xl transition-all duration-300 disabled:cursor-not-allowed group"
                   >
                     <Send className="w-5 h-5 text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
