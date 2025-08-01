@@ -3,7 +3,7 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Projects from "./pages/Projects";
 import About from "./pages/About";
-import AI from "./pages/AI";
+import TalkToMe from "./pages/TalkToMe";
 import NotFound from "./pages/NotFound";
 
 export default function App() {
@@ -15,7 +15,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/about" element={<About />} />
-          <Route path="/ai" element={<AI />} />
+          <Route path="/talk" element={<TalkToMe />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

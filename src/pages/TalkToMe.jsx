@@ -34,7 +34,7 @@ const initialMessages = [
   {
     id: 1,
     type: "ai",
-    content: "Hey there! 👋 I'm Julien's AI assistant, trained on his expertise in automation and AI integration. I can help you learn about his work, book calls, or even start planning your next automation project!",
+    content: "Hey there! 👋 I'm Julien AI, a digital doppelganger. I can help you learn about his work, book calls, or even start planning your next automation project!",
     timestamp: new Date(),
     typing: false
   }
@@ -100,8 +100,11 @@ export default function AIChat() {
 
   // Auto scroll to bottom
   useEffect(() => {
-    if (messages.length > 1) {
-      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    // Only scroll when AI responds (last message is from AI)
+    if (messages.length > 1 && messages[messages.length - 1].type === "ai") {
+      setTimeout(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
     }
   }, [messages]);
 
@@ -525,7 +528,7 @@ export default function AIChat() {
                       value={inputValue}
                       onChange={(e) => setInputValue(e.target.value)}
                       onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
-                      placeholder="Ask me anything about Julien's work..."
+                      placeholder="Ask anything about my work, my background..."
                       className="w-full bg-gray-700/50 border border-gray-600/50 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
                       disabled={!threadId}
                     />
