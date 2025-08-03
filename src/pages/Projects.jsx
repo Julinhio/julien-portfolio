@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { ExternalLink, Github, Play, Zap, Database, Bot, Code, Workflow, Eye, Star, FileText, Users, Smartphone, Brain, Shield, Calculator } from "lucide-react";
 
 const projects = [
   {
     id: 1,
+    slug: "fiche-logement",
     title: "Fiche Logement",
     description: "Rebuilt old Jotform + Monday.com inspection flow into a mobile-first, database-driven app with offline capability and automated PDF generation.",
     category: "fullstack",
@@ -29,6 +31,7 @@ const projects = [
   },
   {
     id: 2,
+    slug: "mon-equipe-ia",
     title: "Mon Équipe IA",
     description: "AI-powered team of 4 specialized assistants for property management teams with secure authentication and conversation storage.",
     category: "ai",
@@ -54,6 +57,7 @@ const projects = [
   },
   {
     id: 3,
+    slug: "proposalflow",
     title: "ProposalFlow",
     description: "AI-powered proposal generator that creates polished, customized proposals right after discovery calls using structured forms and GPT-4.",
     category: "ai",
@@ -80,6 +84,7 @@ const projects = [
   },
   {
     id: 4,
+    slug: "industry-news-linkedin",
     title: "Industry News - LinkedIn Posts",
     description: "Automated content curation and LinkedIn posting system for industry news and updates with engagement tracking.",
     category: "automation",
@@ -105,7 +110,8 @@ const projects = [
   },
   {
     id: 5,
-    title: "Flowerce - AI Customer Support",
+    slug: "flowrence-ai-support",
+    title: "Flowrence - AI Customer Support",
     description: "AI-powered customer support system with intelligent ticket routing, auto-responses, and escalation protocols.",
     category: "ai",
     tech: ["Make.com", "OpenAI", "Ticket Routing", "Knowledge Base", "API"],
@@ -130,6 +136,7 @@ const projects = [
   },
   {
     id: 6,
+    slug: "smart-email-responder",
     title: "Smart Email Auto-Responder",
     description: "Intelligent email automation with context-aware responses and automatic follow-up sequences based on customer behavior.",
     category: "automation",
@@ -246,109 +253,135 @@ export default function Projects() {
             const CategoryIcon = getCategoryIcon(project.category);
             const isExpanded = expandedProject === project.id;
             
+            // Wrapper component for routing
+            const ProjectWrapper = ({ children }) => {
+              if (project.slug) {
+                return (
+                  <Link to={`/projects/${project.slug}`} className="block">
+                    {children}
+                  </Link>
+                );
+              }
+              return children;
+            };
+            
             return (
-              <div
-                key={project.id}
-                className={`group relative bg-gray-800/40 backdrop-blur border border-gray-700/50 rounded-2xl overflow-hidden hover:bg-gray-700/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-blue-500/10 ${
-                  project.featured ? 'ring-1 ring-blue-500/20' : ''
-                }`}
-                onMouseEnter={() => setHoveredProject(project.id)}
-                onMouseLeave={() => setHoveredProject(null)}
-              >
-                {/* Featured Badge */}
-                {project.featured && (
-                  <div className="absolute top-4 left-4 z-10 flex items-center gap-1 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 rounded-full px-3 py-1">
-                    <Star className="w-3 h-3 text-yellow-400" />
-                    <span className="text-xs text-yellow-300 font-medium">Featured</span>
-                  </div>
-                )}
-
-                {/* Project Image */}
-                <div className="relative h-48 overflow-hidden">
-                  <img 
-                    src={project.image} 
-                    alt={project.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent"></div>
-                  
-                  {/* Category Icon */}
-                  <div className="absolute top-4 right-4 bg-gray-900/80 backdrop-blur p-2 rounded-full">
-                    <CategoryIcon className="w-4 h-4 text-blue-400" />
-                  </div>
-                </div>
-
-                {/* Content */}
-                <div className="p-6">
-                  {/* Header */}
-                  <div className="flex items-start justify-between mb-3">
-                    <h3 className="text-xl font-bold text-white group-hover:text-blue-300 transition-colors">
-                      {project.title}
-                    </h3>
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(project.status)}`}>
-                      {project.status}
-                    </span>
-                  </div>
-
-                  {/* Description */}
-                  <p className="text-gray-400 mb-4 leading-relaxed text-sm">
-                    {project.description}
-                  </p>
-
-                  {/* Tech Stack */}
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {project.tech.map((tech, index) => (
-                      <span 
-                        key={index}
-                        className="px-3 py-1 bg-gray-700/50 text-gray-300 text-xs rounded-full border border-gray-600/50"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Metrics */}
-                  <div className="grid grid-cols-3 gap-4 mb-4">
-                    {Object.entries(project.metrics).map(([key, value]) => (
-                      <div key={key} className="text-center">
-                        <div className="text-blue-300 font-bold text-sm">{value}</div>
-                        <div className="text-gray-500 text-xs capitalize">{key}</div>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Expand/Details Button */}
-                  <button
-                    onClick={() => setExpandedProject(isExpanded ? null : project.id)}
-                    className="w-full bg-gray-700/50 hover:bg-gray-600/50 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 border border-gray-600/50 mb-4"
-                  >
-                    {isExpanded ? "Hide Details" : "View Details"}
-                  </button>
-
-                  {/* Expanded Details */}
-                  {isExpanded && (
-                    <div className="bg-gray-900/50 rounded-lg p-4 mb-4 border border-gray-700/30">
-                      <p className="text-gray-300 text-sm mb-3">{project.details}</p>
-                      <div className="space-y-2">
-                        <h4 className="text-sm font-semibold text-blue-300">Key Features:</h4>
-                        {project.highlights.map((highlight, index) => (
-                          <div key={index} className="flex items-center gap-2">
-                            <div className="w-1 h-1 bg-blue-400 rounded-full"></div>
-                            <span className="text-xs text-gray-400">{highlight}</span>
-                          </div>
-                        ))}
-                      </div>
+              <ProjectWrapper key={project.id}>
+                <div
+                  className={`group relative bg-gray-800/40 backdrop-blur border border-gray-700/50 rounded-2xl overflow-hidden hover:bg-gray-700/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-blue-500/10 ${
+                    project.featured ? 'ring-1 ring-blue-500/20' : ''
+                  } ${project.slug ? 'cursor-pointer' : ''}`}
+                  onMouseEnter={() => setHoveredProject(project.id)}
+                  onMouseLeave={() => setHoveredProject(null)}
+                >
+                  {/* Featured Badge */}
+                  {project.featured && (
+                    <div className="absolute top-4 left-4 z-10 flex items-center gap-1 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 rounded-full px-3 py-1">
+                      <Star className="w-3 h-3 text-yellow-400" />
+                      <span className="text-xs text-yellow-300 font-medium">Featured</span>
                     </div>
                   )}
 
-                  {/* Action Note */}
-                  <div className="text-center">
-                    <span className="text-xs text-gray-500">
-                      {project.demoUrl ? "Live demo available" : "Internal/Private project"}
-                    </span>
+                  {/* Clickable indicator for projects with slug */}
+                  {project.slug && (
+                    <div className="absolute top-4 right-4 z-10 bg-gray-900/80 backdrop-blur p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <ExternalLink className="w-4 h-4 text-blue-400" />
+                    </div>
+                  )}
+
+                  {/* Project Image */}
+                  <div className="relative h-48 overflow-hidden">
+                    <img 
+                      src={project.image} 
+                      alt={project.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent"></div>
+                    
+                    {/* Category Icon */}
+                    <div className="absolute top-4 left-4 bg-gray-900/80 backdrop-blur p-2 rounded-full">
+                      <CategoryIcon className="w-4 h-4 text-blue-400" />
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-6">
+                    {/* Header */}
+                    <div className="flex items-start justify-between mb-3">
+                      <h3 className="text-xl font-bold text-white group-hover:text-blue-300 transition-colors">
+                        {project.title}
+                      </h3>
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(project.status)}`}>
+                        {project.status}
+                      </span>
+                    </div>
+
+                    {/* Description */}
+                    <p className="text-gray-400 mb-4 leading-relaxed text-sm">
+                      {project.description}
+                    </p>
+
+                    {/* Tech Stack */}
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {project.tech.map((tech, index) => (
+                        <span 
+                          key={index}
+                          className="px-3 py-1 bg-gray-700/50 text-gray-300 text-xs rounded-full border border-gray-600/50"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Metrics */}
+                    <div className="grid grid-cols-3 gap-4 mb-4">
+                      {Object.entries(project.metrics).map(([key, value]) => (
+                        <div key={key} className="text-center">
+                          <div className="text-blue-300 font-bold text-sm">{value}</div>
+                          <div className="text-gray-500 text-xs capitalize">{key}</div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Expand/Details Button - only for non-clickable projects */}
+                    {!project.slug && (
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setExpandedProject(isExpanded ? null : project.id);
+                        }}
+                        className="w-full bg-gray-700/50 hover:bg-gray-600/50 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 border border-gray-600/50 mb-4"
+                      >
+                        {isExpanded ? "Hide Details" : "View Details"}
+                      </button>
+                    )}
+
+                    {/* Expanded Details - only for non-clickable projects */}
+                    {!project.slug && isExpanded && (
+                      <div className="bg-gray-900/50 rounded-lg p-4 mb-4 border border-gray-700/30">
+                        <p className="text-gray-300 text-sm mb-3">{project.details}</p>
+                        <div className="space-y-2">
+                          <h4 className="text-sm font-semibold text-blue-300">Key Features:</h4>
+                          {project.highlights.map((highlight, index) => (
+                            <div key={index} className="flex items-center gap-2">
+                              <div className="w-1 h-1 bg-blue-400 rounded-full"></div>
+                              <span className="text-xs text-gray-400">{highlight}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Action Note */}
+                    <div className="text-center">
+                      <span className="text-xs text-gray-500">
+                        {project.slug ? "Click to explore details" : 
+                         project.demoUrl ? "Live demo available" : "Internal/Private project"}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </ProjectWrapper>
             );
           })}
         </div>

@@ -5,6 +5,8 @@ import Projects from "./pages/Projects";
 import About from "./pages/About";
 import TalkToMe from "./pages/TalkToMe";
 import NotFound from "./pages/NotFound";
+import ProposalFlow from "./pages/ProposalFlow";
+import Flowrence from "./pages/Flowrence";
 
 export default function App() {
   return (
@@ -17,6 +19,8 @@ export default function App() {
           <Route path="/about" element={<About />} />
           <Route path="/talk" element={<TalkToMe />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/projects/proposalflow" element={<ProposalFlow />} />
+          <Route path="/projects/flowrence-ai-support" element={<Flowrence />} />
         </Routes>
       </main>
     </Router>
