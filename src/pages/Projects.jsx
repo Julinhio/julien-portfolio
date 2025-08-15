@@ -10,7 +10,7 @@ const projects = [
     description: "Rebuilt old Jotform + Monday.com inspection flow into a mobile-first, database-driven app with offline capability and automated PDF generation.",
     category: "fullstack",
     tech: ["React", "Supabase", "Airtable", "Make.com", "PDF Generation"],
-    image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=600&h=400&fit=crop",
+    image: "/images/projects/fiche-logement.png",
     status: "Live",
     metrics: { 
       saved: "15hrs/week", 
@@ -36,7 +36,7 @@ const projects = [
     description: "AI-powered team of 4 specialized assistants for property management teams with secure authentication and conversation storage.",
     category: "ai",
     tech: ["React", "Supabase", "Vercel", "n8n", "OpenAI", "Webhooks"],
-    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&h=400&fit=crop",
+    image: "/images/projects/mon-equipe-IA.png",
     status: "Live",
     metrics: { 
       agents: "4 specialists", 
@@ -62,7 +62,7 @@ const projects = [
     description: "AI-powered proposal generator that creates polished, customized proposals right after discovery calls using structured forms and GPT-4.",
     category: "ai",
     tech: ["Make.com", "GPT-4", "Tally Forms", "Google Slides", "PDF Generation", "Gmail API"],
-    image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=600&h=400&fit=crop",
+    image: "/images/projects/proposal-flow.png",
     status: "Live",
     metrics: { 
       time: "Minutes not hours", 
@@ -89,7 +89,7 @@ const projects = [
     description: "Automated content curation and LinkedIn posting system for industry news and updates with engagement tracking.",
     category: "automation",
     tech: ["Make.com", "LinkedIn API", "RSS Feeds", "Content Curation"],
-    image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=600&h=400&fit=crop",
+    image: "/images/projects/linkedin-posts.png",
     status: "Live",
     metrics: { 
       posts: "Daily", 
@@ -115,7 +115,7 @@ const projects = [
     description: "AI-powered customer support system with intelligent ticket routing, auto-responses, and escalation protocols.",
     category: "ai",
     tech: ["Make.com", "OpenAI", "Ticket Routing", "Knowledge Base", "API"],
-    image: "https://images.unsplash.com/photo-1553028826-f4804a6dba3b?w=600&h=400&fit=crop",
+    image: "/images/projects/flowrence.png",
     status: "Live",
     metrics: { 
       response: "Instant", 

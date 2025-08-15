@@ -7,6 +7,7 @@ import TalkToMe from "./pages/TalkToMe";
 import NotFound from "./pages/NotFound";
 import ProposalFlow from "./pages/ProposalFlow";
 import Flowrence from "./pages/Flowrence";
+import FicheLogement from "./pages/FicheLogement";
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
           <Route path="*" element={<NotFound />} />
           <Route path="/projects/proposalflow" element={<ProposalFlow />} />
           <Route path="/projects/flowrence-ai-support" element={<Flowrence />} />
+          <Route path="/projects/fiche-logement" element={<FicheLogement />} />
         </Routes>
       </main>
     </Router>
