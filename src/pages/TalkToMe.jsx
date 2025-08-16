@@ -99,14 +99,16 @@ export default function AIChat() {
   }, [aiMood]);
 
   // Auto scroll to bottom
-  useEffect(() => {
-    // Only scroll when AI responds (last message is from AI)
-    if (messages.length > 1 && messages[messages.length - 1].type === "ai") {
-      setTimeout(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-      }, 100);
-    }
-  }, [messages]);
+useEffect(() => {
+  // Scroll for both user and AI messages
+  if (messages.length > 1) {
+    setTimeout(() => {
+      if (chatContainerRef.current) {
+        chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+      }
+    }, 100);
+  }
+}, [messages]);
 
   // Function to handle book_call
   const handleBookCall = async (args) => {
@@ -124,6 +126,45 @@ export default function AIChat() {
       calendar_link: "https://calendly.com/julien-automata" // Replace with your real link
     };
   };
+
+  const handleSendEmail = async (args) => {
+    console.log("Send email requested with:", args);
+    
+    try {
+      const response = await fetch('https://hook.eu2.make.com/kodogxyiqvi3oxbvitlswk8brv2wwb2s', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: args.name,
+          email: args.email,
+          subject: args.subject,
+          message: args.message,
+          project_type: args.project_type,
+          company_name: args.company_name,
+          industry: args.industry,
+          company_size: args.company_size,
+          timestamp: new Date().toISOString(),
+          source: 'portfolio_ai_chat'
+        })
+      });
+      
+      if (response.ok) {
+        return {
+          success: true,
+        };
+      } else {
+        throw new Error('Webhook failed');
+      }
+    } catch (error) {
+      console.error('Send email error:', error);
+      return {
+        success: false,
+        message: "Failed to send email"
+      };
+    }
+  };  
 
   // Assistant API integration
   const simulateAIResponse = async (userMessage) => {
@@ -179,6 +220,8 @@ export default function AIChat() {
           let functionResult;
           if (functionName === 'book_call') {
             functionResult = await handleBookCall(functionArgs);
+          } else if (functionName === 'send_email') {
+            functionResult = await handleSendEmail(functionArgs);
           } else {
             functionResult = { error: "Unknown function" };
           }
@@ -468,8 +511,7 @@ export default function AIChat() {
               {/* Messages */}
               <div 
                 ref={chatContainerRef}
-                className="h-96 overflow-y-auto p-6 space-y-4 bg-gradient-to-b from-gray-900/20 to-gray-800/20"
-              >
+                className="h-[500px] overflow-y-auto p-6 space-y-4 bg-gradient-to-b from-gray-900/20 to-gray-800/20"              >
                 {messages.map((message) => (
                   <div
                     key={message.id}
