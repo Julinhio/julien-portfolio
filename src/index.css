@@ -1,3 +1,68 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-optical-sizing: auto;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    @apply bg-paper font-sans text-ink antialiased;
+    font-feature-settings: "kern" 1, "liga" 1;
+  }
+
+  ::selection {
+    @apply bg-accent text-paper;
+  }
+
+  :focus-visible {
+    outline: 2px solid theme("colors.accent.DEFAULT");
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+
+  /* Sections rendered on the ink surface need the lighter accent to stay legible. */
+  .surface-ink :focus-visible {
+    outline-color: theme("colors.accent.soft");
+  }
+}
+
+@layer components {
+  /* Page gutter and reading shell. */
+  .shell {
+    @apply mx-auto w-full max-w-shell px-6 sm:px-8 lg:px-12;
+  }
+
+  /* Display type: Fraunces, tight, unapologetic. The page's main visual lever. */
+  .display {
+    @apply font-display font-semibold leading-[0.95] tracking-[-0.022em];
+    font-variation-settings: "SOFT" 0, "WONK" 0;
+  }
+
+  /* Small uppercase label, used for the location line. */
+  .label {
+    @apply text-xs font-medium uppercase tracking-label;
+  }
+
+  /* Hairline rules keep the editorial grid visible without boxes. */
+  .rule {
+    @apply border-t border-ink-line;
+  }
+
+  .rule-inverted {
+    @apply border-t border-paper/20;
+  }
+}

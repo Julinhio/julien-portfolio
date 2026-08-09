@@ -1,30 +1,15 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import Home from "./pages/Home";
-import Projects from "./pages/Projects";
-import About from "./pages/About";
-import TalkToMe from "./pages/TalkToMe";
-import NotFound from "./pages/NotFound";
-import ProposalFlow from "./pages/ProposalFlow";
-import Flowrence from "./pages/Flowrence";
-import FicheLogement from "./pages/FicheLogement";
+import Hero from "./components/Hero";
+import HowIWork from "./components/HowIWork";
+import Background from "./components/Background";
+import Contact from "./components/Contact";
 
 export default function App() {
   return (
-    <Router>
-      <Navbar />
-      <main className="min-h-screen bg-gray-50">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/projects" element={<Projects />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/talk" element={<TalkToMe />} />
-          <Route path="*" element={<NotFound />} />
-          <Route path="/projects/proposalflow" element={<ProposalFlow />} />
-          <Route path="/projects/flowrence-ai-support" element={<Flowrence />} />
-          <Route path="/projects/fiche-logement" element={<FicheLogement />} />
-        </Routes>
-      </main>
-    </Router>
+    <main>
+      <Hero />
+      <HowIWork />
+      <Background />
+      <Contact />
+    </main>
   );
 }

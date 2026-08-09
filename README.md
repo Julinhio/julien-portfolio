@@ -1,40 +1,39 @@
-# Julien's Portfolio
+# Portfolio
 
-A clean, minimal, and production-ready personal portfolio built with React, Vite, and TailwindCSS.
+Single-page personal portfolio: Operations &amp; Automation. Static, no API calls, no
+environment variables, no secrets.
 
-## 🚀 Stack
-- React (with Vite)
-- TailwindCSS (utility-first)
-- React Router DOM
+## Stack
 
-## 📁 Folder Structure
-- `src/components/` – Reusable UI components
-- `src/pages/` – Route-based pages
-- `src/data/` – Static or dynamic data
-- `src/styles/` – Custom styles (if needed)
-- `docs/` – Project documentation
+- React 19 + Vite
+- Tailwind CSS 3
+- Deployed on Vercel
 
-## 🧭 Pages
-- Home, Projects, About, AI (chatbot), 404 Not Found
-
-## 🛠️ Getting Started
+## Getting started
 
 ```bash
 npm install
 npm run dev
 ```
 
-- Visit [http://localhost:5173](http://localhost:5173) to view the site.
-
-## 🏗️ Build for Production
-
 ```bash
 npm run build
 ```
 
-## 📄 Documentation
-See the `docs/` folder for project, technical, feature, and design documentation.
+```bash
+npm run lint
+```
 
----
+## Structure
 
-Made with ❤️ by Julien
+- `src/components/` — section components (`Hero`, `HowIWork`, `Background`, `Contact`)
+  and the `Section` / `Action` design-system primitives
+- `src/data/` — page content and outbound links
+- `src/index.css` — design tokens applied to base elements and shared utility classes
+- `tailwind.config.js` — colour, type and spacing scale
+
+## Editing the outbound links
+
+Every external URL lives in `src/data/links.js`. `resume` is `null` until the file
+exists; while it is `null`, the resume actions render as disabled controls rather
+than dead links.
