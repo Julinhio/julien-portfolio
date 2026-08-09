@@ -1,33 +1,24 @@
 import Section from "./Section";
 import { LINKS } from "../data/links";
 
-const ROW =
-  "display block py-6 text-[clamp(1.75rem,4.5vw,3rem)] transition-colors duration-150 sm:py-8";
+// One treatment for all three rows. A row without a destination is plain text,
+// not a greyed-out control, so nothing on the list reads as broken.
+const ROW = "display block py-6 text-[clamp(1.75rem,4.5vw,3rem)] text-ink sm:py-8";
 
 function ContactRow({ href, external, children }) {
-  if (!href) {
-    return (
-      <li className="rule">
-        <button
-          type="button"
-          disabled
-          className={`${ROW} w-full cursor-not-allowed text-left text-ink-muted`}
-        >
-          {children}
-        </button>
-      </li>
-    );
-  }
-
   return (
     <li className="rule">
-      <a
-        href={href}
-        className={`${ROW} text-ink hover:text-accent`}
-        {...(external ? { target: "_blank", rel: "noreferrer noopener" } : {})}
-      >
-        {children}
-      </a>
+      {href ? (
+        <a
+          href={href}
+          className={`${ROW} transition-colors duration-150 hover:text-accent`}
+          {...(external ? { target: "_blank", rel: "noreferrer noopener" } : {})}
+        >
+          {children}
+        </a>
+      ) : (
+        <span className={ROW}>{children}</span>
+      )}
     </li>
   );
 }
