@@ -22,7 +22,7 @@ export default function Hero() {
         </p>
 
         <div className="mt-12 flex flex-wrap gap-3 sm:mt-14 sm:gap-4">
-          <Action href="#how-i-work" variant="solid">
+          <Action href="#selected-work" variant="solid">
             View selected work
           </Action>
           <Action href={LINKS.resume}>Download resume</Action>

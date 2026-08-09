@@ -7,8 +7,7 @@ export default {
         // Warm paper surface, ink text, one accent used sparingly.
         paper: {
           DEFAULT: "#F6F3EC",
-          dim: "#EFEBE1",
-          muted: "#C9C2B4", // on ink: 9.9:1
+          dim: "#EDE8DE", // on ink: 14.5:1
         },
         ink: {
           DEFAULT: "#1A1815", // on paper: 15.9:1

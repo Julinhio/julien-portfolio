@@ -25,10 +25,12 @@ export default function HowIWork() {
               <h3 className="display text-[clamp(1.375rem,3vw,2rem)]">
                 {item.title}
               </h3>
-              <p className="mt-5 font-display text-[clamp(1.0625rem,2vw,1.3125rem)] leading-snug text-paper">
+              {/* Principle and example share one size and one colour. The example
+                  is the evidence, so it must not read as a footnote to the rule. */}
+              <p className="mt-5 max-w-[64ch] text-[1.0625rem] font-medium leading-relaxed text-paper-dim">
                 {item.principle}
               </p>
-              <p className="mt-6 max-w-[64ch] text-[0.9375rem] leading-relaxed text-paper-muted sm:text-base">
+              <p className="mt-4 max-w-[64ch] text-[1.0625rem] leading-relaxed text-paper-dim">
                 {item.example}
               </p>
             </div>
