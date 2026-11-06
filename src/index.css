@@ -9,7 +9,7 @@
 
   html {
     scroll-behavior: smooth;
-    font-optical-sizing: auto;
+    scroll-padding-top: 5rem; /* keeps anchored headings clear of the sticky header */
     -webkit-text-size-adjust: 100%;
   }
 
@@ -20,49 +20,61 @@
   }
 
   body {
-    @apply bg-paper font-sans text-ink antialiased;
-    font-feature-settings: "kern" 1, "liga" 1;
+    @apply bg-page font-sans text-ink antialiased;
+    font-feature-settings: "cv11" 1, "ss01" 1;
   }
 
   ::selection {
-    @apply bg-accent text-paper;
+    @apply bg-ink text-white;
   }
 
   :focus-visible {
     outline: 2px solid theme("colors.accent.DEFAULT");
     outline-offset: 3px;
-    border-radius: 1px;
+    border-radius: 2px;
   }
 
-  /* Sections rendered on the ink surface need the lighter accent to stay legible. */
-  .surface-ink :focus-visible {
+  .on-ink :focus-visible {
     outline-color: theme("colors.accent.soft");
   }
 }
 
 @layer components {
-  /* Page gutter and reading shell. */
   .shell {
-    @apply mx-auto w-full max-w-shell px-6 sm:px-8 lg:px-12;
+    @apply mx-auto w-full max-w-shell px-5 sm:px-8;
   }
 
-  /* Display type: Fraunces, tight, unapologetic. The page's main visual lever. */
-  .display {
-    @apply font-display font-semibold leading-[0.95] tracking-[-0.022em];
-    font-variation-settings: "SOFT" 0, "WONK" 0;
+  /* Small monospace label: section kickers, tags, captions. */
+  .kicker {
+    @apply font-mono text-[0.6875rem] uppercase tracking-[0.08em];
   }
 
-  /* Small uppercase label, used for the location line. */
-  .label {
-    @apply text-xs font-medium uppercase tracking-label;
+  .card {
+    @apply rounded-xl border border-ink-line bg-white;
   }
 
-  /* Hairline rules keep the editorial grid visible without boxes. */
-  .rule {
-    @apply border-t border-ink-line;
+  .chip {
+    @apply inline-flex items-center rounded-md border border-ink-line bg-white px-2 py-1 font-mono text-[0.6875rem] leading-none text-ink-muted;
   }
 
-  .rule-inverted {
-    @apply border-t border-paper/20;
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors duration-150;
+  }
+
+  .btn-solid {
+    @apply btn border-ink bg-ink text-white hover:bg-ink-soft;
+  }
+
+  /* The one loud button: primary contact actions only. */
+  .btn-accent {
+    @apply btn border-accent bg-accent text-white hover:border-accent-dark hover:bg-accent-dark;
+  }
+
+  .btn-outline {
+    @apply btn border-ink-line bg-white text-ink hover:border-ink;
+  }
+
+  .prose-block p + p {
+    @apply mt-4;
   }
 }

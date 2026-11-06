@@ -4,31 +4,31 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Warm paper surface, ink text, one accent used sparingly.
-        paper: {
-          DEFAULT: "#F6F3EC",
-          dim: "#EDE8DE", // on ink: 14.5:1
-        },
+        // Near-white page, white cards, warm grey panels, one red accent.
+        page: "#F7F7F5",
+        panel: "#F1F0EC",
         ink: {
-          DEFAULT: "#1A1815", // on paper: 15.9:1
-          muted: "#5C554A", // on paper: 6.6:1
-          line: "#DCD5C8",
+          DEFAULT: "#141413", // on page: 17.6:1
+          soft: "#3A3A37",
+          muted: "#62625D", // on page: 5.9:1, on white: 6.3:1
+          line: "#E3E2DE",
         },
         accent: {
-          DEFAULT: "#B33A16", // on paper: 5.4:1
-          soft: "#E9835B", // on ink: 6.6:1
+          DEFAULT: "#D23A22", // on white: 4.8:1, white on it: 4.8:1
+          dark: "#B02E18",
+          soft: "#FF8A73", // on ink: 7.9:1
         },
+        ok: "#1F9D55",
       },
       fontFamily: {
-        display: ['"Fraunces"', "Georgia", "Cambria", "serif"],
-        sans: ['"Instrument Sans"', "ui-sans-serif", "system-ui", "sans-serif"],
+        sans: ['"Inter"', "ui-sans-serif", "system-ui", "sans-serif"],
+        mono: ['"JetBrains Mono"', "ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
       },
       maxWidth: {
-        shell: "76rem",
-        measure: "46rem",
+        shell: "72rem",
       },
       letterSpacing: {
-        label: "0.16em",
+        tightest: "-0.035em",
       },
     },
   },
