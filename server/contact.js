@@ -160,7 +160,9 @@ export async function handleContact({ method, body, ip = "unknown", origin, host
 
   // Bots: a filled honeypot or an instant submission gets a fake success, so
   // they have no signal to adapt to. Nothing is sent.
-  const elapsed = Date.now() - Number(input.startedAt);
+  // fillMs is measured in the browser (time between form display and submit),
+  // so it doesn't depend on the visitor's clock matching the server's.
+  const elapsed = Number(input.fillMs);
   if ((typeof input.website === "string" && input.website.trim() !== "") || !(elapsed >= LIMITS.minFillMs)) {
     console.warn(`[contact] submission discarded as automated (ip ${ip})`);
     return reply(200, { ok: true });

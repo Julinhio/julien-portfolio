@@ -43,7 +43,9 @@ export default function ContactForm() {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, startedAt }),
+        // Only a duration is sent: comparing the browser clock with the
+        // server clock would discard visitors whose clock is off.
+        body: JSON.stringify({ ...data, fillMs: Date.now() - startedAt }),
       });
       const body = await response.json().catch(() => null);
 
