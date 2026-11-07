@@ -30,9 +30,8 @@ export const STATS = [
     project: "fiche-logement",
   },
   {
-    value: "46",
-    suffix: " / ~100",
-    label: "sign-ups who bought credits on the self-serve product",
+    value: "40%",
+    label: "of a training programme’s students signed up to the AI platform I built",
     project: "mon-equipe-ia",
   },
   {
@@ -72,7 +71,7 @@ export const STACK = {
     "The services and tools inside the systems above. I choose them, wire them together and keep them running; the custom code is written by AI coding agents from my specs.",
   groups: [
     { title: "Integrate", items: ["REST & GraphQL APIs", "Webhooks", "Monday.com", "Stripe", "Aircall", "Google Workspace APIs"] },
-    { title: "Automate", items: ["Make.com (certified)", "n8n", "Google Sheets & Apps Script", "Scheduled jobs"] },
+    { title: "Automate", items: ["Make.com (certified)","Google Sheets & Apps Script", "Scheduled jobs"] },
     { title: "AI", items: ["OpenRouter", "Claude", "Gemini", "Whisper transcription", "Model comparisons"] },
     { title: "Ship", items: ["Supabase & Postgres", "Railway", "Vercel", "GitHub", "Claude Code & Codex review"] },
   ],
@@ -80,7 +79,7 @@ export const STACK = {
 
 export const INTRO = [
   "I’ve worked remotely since around 2011, close to fifteen years now. As an English to French linguist and then a quality reviewer, I worked with project managers and translators across countries and time zones, for clients such as Cathay Pacific, Radisson and AWS. Reviewing machine output at volume taught me to assume a deliverable is wrong somewhere until I’ve found where.",
-  "Since 2025 I’ve built tools for operations, sales and training teams. Most projects start the same way: someone describes, often in a call or a chat message, the part of the job that eats their week. I ask until I understand the work behind the request, write down what we agreed, and keep them posted in plain words while it’s being built.",
+  "In 2023 I taught myself JavaScript, React and automation, and started AI Flow Systems, a small agency building Make automations with language models for a few clients. Since 2025 I’ve done that work for the operations, sales and training teams of Conciergerie Cardin, as a contractor. Most projects start the same way: someone describes, often in a call or a chat message, the part of the job that eats their week. I ask until I understand the work behind the request, write down what we agreed, and keep them posted in plain words while it’s being built.",
   "Then I see it through: from the first sketch to a tool the team opens every morning, and after that the monitoring, the fixes and the handover. I presented each tool to the people using it and turned their feedback into the next updates.",
 ];
 
@@ -92,6 +91,12 @@ export const BACKGROUND = {
       role: "Process & Automation Specialist",
       detail:
         "Conciergerie Cardin (Letahost, Invest Malin), as a contractor. Three-person innovation team; owner of each product end to end.",
+    },
+    {
+      period: "2023 – 2024",
+      role: "Founder, AI Flow Systems",
+      detail:
+        "Automation agency run through my company, Syntax Buddy Limited. Make scenarios with language models for a few clients: reporting, customer support, content, hiring and sales proposals. Translation work continued alongside.",
     },
     {
       period: "2013 – 2024",

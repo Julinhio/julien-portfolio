@@ -8,12 +8,14 @@
  * - `stack` lists the tools inside each system. It is not a list of languages
  *   Julien writes by hand: on coded projects, AI coding agents wrote most of the
  *   code from his specs and reviews (see `role`).
+ * - `results` is optional: leave it out rather than invent a figure.
  * - `kind`: "client" (work for a client), "independent" (Julien's own
  *   professional work, outside a client engagement) or
  *   "personal" (side projects and experiments).
  */
 
 const CARDIN = "Conciergerie Cardin";
+const AIFS = "AI Flow Systems";
 
 export const PROJECTS = [
   {
@@ -134,10 +136,10 @@ export const PROJECTS = [
     visual: {
       kind: "stats",
       tiles: [
-        { value: "~100", label: "accounts created" },
-        { value: "46", label: "bought at least one credit pack" },
-        { value: "3–5", label: "new sign-ups a day" },
+        { value: "40%", label: "of the training programme’s students signed up" },
         { value: "Jul 2026", label: "first live payments" },
+        { value: "4", label: "Stripe credit packs" },
+        { value: "8", label: "reviewed pull requests for the admin console" },
       ],
     },
     listLine:
@@ -155,13 +157,12 @@ export const PROJECTS = [
       "Built with Claude Code from my briefs, with several rounds of Codex review on the sensitive pull requests. The admin console shipped as eight reviewed pull requests in a single run.",
     ],
     results: [
-      { value: "~100", label: "accounts created" },
-      { value: "46", label: "of them bought at least one credit pack" },
-      { value: "3–5", label: "new sign-ups a day" },
+      { value: "40%", label: "of the training programme’s students signed up to Mon Équipe IA" },
       { value: "Jul 2026", label: "first live payments" },
+      { value: "4", label: "Stripe credit packs, paid per record" },
+      { value: "8", label: "reviewed pull requests for the admin console, in one run" },
     ],
-    resultsNote:
-      "Counts from my last check before my access ended, October 2026. They can no longer be re-verified.",
+    resultsNote: "Conversion rate from my last check, before my access ended in October 2026.",
     stack: [
       "React, Vite, Tailwind",
       "Supabase: Auth, Postgres with row-level security, Edge Functions",
@@ -395,6 +396,163 @@ export const PROJECTS = [
     stack: ["Claude and ChatGPT for analysis", "Make.com", "Monday.com", "OpenRouter", "Google Docs and Sheets"],
   },
 
+  // AI Flow Systems: Julien's automation agency, 2023 – 2024, before Cardin.
+  // Make-based projects, kept shorter than the Cardin pages on purpose. No
+  // measured results exist for them, so `results` only holds structural facts.
+
+  {
+    slug: "kitup",
+    title: "KitUP: reporting, content and hiring",
+    kind: "client",
+    org: AIFS,
+    period: "2023 – 2024",
+    type: "Automation suite",
+    status: "Delivered in three stages, each with its Make blueprint, a dashboard and a video walkthrough of three to five minutes.",
+    listLine:
+      "Three Make automations for one client: a Monday-morning report, AI content ideas and a five-step hiring pipeline.",
+    problem: [
+      "KitUP ran several weekly routines by hand. Someone compiled the numbers in Google Sheets and emailed them to management, the marketing team reviewed content performance one post at a time, and job applications were sorted and followed up manually, which slowed down onboarding.",
+    ],
+    solution: [
+      "A weekly report: every Monday at 7 a.m. a Make scenario pulls the last two weeks of data, works out the changes and growth rates, and sends a short summary by Gmail and Slack, with a Notion dashboard behind it. It sorts rows by date instead of filtering them, which held up better when the sheet changed.",
+      "Content ideas: each week the best-performing posts (click rate, likes, sentiment, format) go to the OpenAI API with a structured prompt. It sums up what worked and suggests three ideas with titles and outlines, sent to Notion and to a Slack digest where the team rates them. Nothing gets published without a person reading it first.",
+      "Hiring, in five linked scenarios: a Tally application lands in Airtable with a confirmation email and a Slack alert; approval sends a Calendly link; the booking email is read by GPT-4 to pull out the name, date and meeting link; a passed interview starts the onboarding for that department; and a button in the onboarding hub marks the person as hired.",
+    ],
+    role: [
+      "I scoped the three stages with the client, built the scenarios and prompts, and handed each one over with its blueprint, a dashboard and a short video explaining how it works.",
+    ],
+    results: [
+      { value: "3", label: "automations, delivered one stage at a time" },
+      { value: "5", label: "linked scenarios in the hiring pipeline" },
+      { value: "Mon, 7 a.m.", label: "weekly report, with nobody compiling it" },
+    ],
+    stack: [
+      "Make.com",
+      "Google Sheets",
+      "OpenAI API (GPT-4)",
+      "Tally, Airtable, Calendly",
+      "Notion",
+      "Slack, Gmail, Zoho Mail",
+      "Webhooks and mailhooks",
+    ],
+  },
+
+  {
+    slug: "linkedin-news-posts",
+    title: "Industry news to LinkedIn posts",
+    kind: "client",
+    org: AIFS,
+    period: "2023 – 2024",
+    type: "Content pipeline",
+    status: "Ran for the client on a monthly subscription.",
+    listLine:
+      "Turns an industry news feed into LinkedIn posts that are written and published automatically, for a US client.",
+    problem: [
+      "An entrepreneur in the US wanted to post regularly on LinkedIn about news in their industry, without spending hours reading the news and writing posts.",
+    ],
+    solution: [
+      "Two Make scenarios. The first watches an industry RSS feed and logs each new article’s title, link and summary in Google Sheets. The second picks up every new row, adds context with Perplexity and Gemini, and publishes a finished post on LinkedIn: either a written summary of the article or an image post.",
+    ],
+    role: [
+      "I negotiated the engagement over several weeks, built both scenarios and the prompts, and kept the system running for the client.",
+    ],
+    results: [
+      { value: "2", label: "scenarios: one collects the news, one writes and publishes" },
+      { value: "0", label: "manual steps between a new article and a published post" },
+    ],
+    stack: ["Make.com", "RSS", "Google Sheets", "Perplexity", "Gemini", "LinkedIn"],
+  },
+
+  {
+    slug: "flowrence",
+    title: "Flowrence support assistant",
+    kind: "client",
+    org: AIFS,
+    period: "2023 – 2024",
+    type: "Support assistant",
+    status: "Built for an e-commerce client at AI Flow Systems.",
+    listLine:
+      "Support chat assistant for an online store: order tracking, tickets, and a handoff to a person when needed.",
+    problem: [
+      "An e-commerce business answered the same support questions again and again, starting with “where is my order?”, and needed the other requests logged as tickets without losing track of the urgent ones.",
+    ],
+    solution: [
+      "A chat assistant built in Voiceflow, with Make behind it. It greets the customer, searches the knowledge base for an answer, and has a fallback for when nothing matches.",
+      "For order questions it confirms the order number, fetches the order through Make and gives the delivery status. Other issues become tickets: the assistant sends a POST request that triggers a Make scenario. When a problem can’t be solved right away, it hands the conversation to a person.",
+    ],
+    role: [
+      "I designed the conversation flows in Voiceflow and built the Make scenarios behind them: order lookup, ticket creation and escalation.",
+    ],
+    stack: ["Voiceflow", "Make.com", "Webhooks (POST requests)", "Knowledge base"],
+  },
+
+  {
+    slug: "email-autoresponder",
+    title: "Support email autoresponder",
+    kind: "client",
+    org: AIFS,
+    period: "2023 – 2024",
+    type: "Support automation",
+    status: "Built at AI Flow Systems.",
+    listLine:
+      "Sorts incoming support emails into seven categories with GPT, answers the routine ones and escalates the rest.",
+    problem: [
+      "Support emails arrived in one inbox, all mixed together: billing, technical issues, sales, delivery, refunds, orders. Each one had to be read, sorted and answered by hand, even when the knowledge base already had the answer.",
+    ],
+    solution: [
+      "When an email arrives, GPT extracts the useful details and puts it in one of seven categories. Each category has its own route: most look for an answer in the knowledge base and send a reply written from it, while delivery and order-status questions go through an order check first.",
+      "A person takes over when no reliable answer is found, when the message looks urgent, or when it lands in “other”. Routine questions get a quick, consistent answer, and the tricky ones still reach someone.",
+    ],
+    role: ["I designed the categories and the routing, wrote the prompts and built the Make scenarios."],
+    results: [
+      { value: "7", label: "categories every incoming email is sorted into" },
+      { value: "3", label: "cases that hand an email to a person" },
+    ],
+    stack: ["Make.com", "OpenAI (GPT)", "Email", "Knowledge base"],
+  },
+
+  {
+    slug: "smart-radar",
+    title: "Smart Radar",
+    kind: "client",
+    org: AIFS,
+    period: "2023 – 2024",
+    type: "Research agent",
+    status: "Built at AI Flow Systems. The same idea came back in 2026 as my prospecting and job radars.",
+    listLine:
+      "Turns a spreadsheet of leads or competitors into a market research report written with AI.",
+    problem: [
+      "Agencies and solo founders need market research before a pitch or a launch, but rarely have the time to go through competitors, reviews and industry signals by hand.",
+    ],
+    solution: [
+      "A modular Make scenario that starts from a list of leads or competitors in Google Sheets. Separate branches summarise the data, look for trends, profile each competitor and how it positions itself, pull industry signals from reviews, websites and scraped data, and finish with GPT’s recommendations on gaps and opportunities.",
+      "Gemini analyses and explains the data in each branch, and everything is assembled into a Google Doc or a page ready for Notion.",
+    ],
+    role: ["I designed the report structure and its branches, wrote the prompts and built the scenario."],
+    stack: ["Make.com", "Google Sheets", "Gemini", "OpenAI (GPT)", "Web scraping", "Google Docs, Notion"],
+  },
+
+  {
+    slug: "proposalflow",
+    title: "ProposalFlow",
+    kind: "client",
+    org: AIFS,
+    period: "2023 – 2024",
+    type: "Sales automation",
+    status: "Built at AI Flow Systems.",
+    listLine:
+      "Writes a tailored sales proposal from discovery-call notes and sends it out as a branded PDF.",
+    problem: [
+      "After each discovery call, writing the proposal could take a few hours: restating the client’s problem, the scope, the deliverables and the price, then laying it all out properly. And proposals came out uneven from one client to the next.",
+    ],
+    solution: [
+      "During or right after the call, the person fills in an internal Tally form: the client’s problems, scope, tone and price. Make picks it up, and GPT-4 drafts a tailored proposal with an introduction, summary, solution, deliverables, expected results, pricing and any discount.",
+      "The text goes into a Google Slides template in the agency’s branding and is exported as a locked PDF. It is sent by email as a draft to edit, or straight to the client by Gmail or Slack after a short delay, so it doesn’t land seconds after the call. A payment or signature link can be added, and each proposal is logged in a CRM for follow-up.",
+    ],
+    role: ["I designed the form, the proposal structure and the prompt, and built the Make scenario and the Slides template."],
+    stack: ["Tally", "Make.com", "OpenAI (GPT-4)", "Google Slides, PDF export", "Gmail, Slack", "CRM"],
+  },
+
   {
     slug: "prospecting-radar",
     title: "Prospecting radar",
@@ -409,15 +567,17 @@ export const PROJECTS = [
       "Companies rarely say they need automation, but their job ads often show it: many describe manual, repetitive work that a system could take over. Reading them by hand, every day, across several markets, doesn’t scale.",
     ],
     solution: [
-      "Every night the radar collects new job ads, has a language model keep those that describe manual work, then drafts a problem hypothesis for each: what is done by hand, what kind of system could take it over, how much of the role it could absorb. Every quote it uses is checked against the ad text.",
+      "Every night the radar collects new job ads in three countries and six industries, has a language model keep those that describe manual work, then drafts a problem hypothesis for each: what is done by hand, what kind of system could take it over, how much of the role it could absorb. Every quote it uses is checked against the ad text.",
       "The best leads can be enriched on demand with company registry data and decision-makers. Everything lands in a private dashboard. The radar never sends a message: contact stays a human decision.",
     ],
     role: [
       "I specified the radar, chose the sources and models and set the cost limits. Claude Code wrote the code and Codex reviewed each pull request.",
     ],
     results: [
-      { value: "1 night", label: "between a job ad and a scored lead" },
-      { value: "€1", label: "hard daily cost cap, plus monthly limits per tool" },
+      { value: "1,000+", label: "job ads read every night" },
+      { value: "~75", label: "leads surfaced every night" },
+      { value: "3", label: "countries covered" },
+      { value: "6", label: "industries scanned" },
     ],
     stack: [
       "Railway (site, nightly job, Postgres)",
