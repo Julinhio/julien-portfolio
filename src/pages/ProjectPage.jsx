@@ -56,16 +56,18 @@ export default function ProjectPage({ project }) {
         )}
       </header>
 
-      <dl className="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-ink-line bg-ink-line lg:grid-cols-4">
-        {project.results.map((result) => (
-          <div key={result.label} className="flex flex-col gap-2 bg-white p-5">
-            <dt className="text-xs leading-snug text-ink-muted">{result.label}</dt>
-            <dd className="order-first text-[clamp(1.375rem,3vw,1.875rem)] font-semibold leading-none tracking-tight [font-variant-numeric:tabular-nums]">
-              {result.value}
-            </dd>
-          </div>
-        ))}
-      </dl>
+      {project.results?.length > 0 && (
+        <dl className="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-ink-line bg-ink-line lg:grid-cols-4">
+          {project.results.map((result) => (
+            <div key={result.label} className="flex flex-col gap-2 bg-white p-5">
+              <dt className="text-xs leading-snug text-ink-muted">{result.label}</dt>
+              <dd className="order-first text-[clamp(1.375rem,3vw,1.875rem)] font-semibold leading-none tracking-tight [font-variant-numeric:tabular-nums]">
+                {result.value}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      )}
       {project.resultsNote && <p className="mt-3 text-xs text-ink-muted">{project.resultsNote}</p>}
 
       {project.visual && project.visual.kind !== "stats" && (
